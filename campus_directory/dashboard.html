@@ -1,0 +1,91 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+  <head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>Campus Navigator - Dashboard</title> 
+  <style>/* Reset */ 
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; } 
+  /* Navbar */ 
+  .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 50px; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; } 
+  .navbar .logo { display: flex; align-items: center; font-size: 18px; font-weight: bold; color: #2563eb; } 
+  .navbar .logo img { width: 28px; margin-right: 8px; } 
+  .navbar nav a { margin-left: 20px; text-decoration: none; color: #333; font-weight: 500; } 
+  .navbar nav a:hover { color: #2563eb; } 
+  /* Hero Section */ 
+  .hero { background: linear-gradient(rgba(0, 0, 80, 0.4), rgba(0, 0, 80, 0.4)), url('https://wallpapers.com/images/hd/college-background-livv32ma9zxjii0i.jpg'); background-size: cover; background-position: center; color: white; text-align: center; padding: 200px 305px;height: 650px; } 
+  .hero h1 { font-size: 42px; margin-bottom: 15px; font-weight: 700; } 
+  .hero p { font-size: 18px; margin-bottom: 30px; } 
+  .hero-buttons { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; } 
+  .btn { display: inline-block; padding: 12px 20px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.3s; } 
+  .btn.blue { background: #2563eb; color: #fff; } 
+  .btn.blue:hover { background: #1e4ed8; } 
+  .btn.green { background: #22c55e; color: #fff; } 
+  .btn.green:hover { background: #16a34a; } 
+  .search-box { padding: 12px; border-radius: 6px; border: none; outline: none; font-size: 14px; } 
+  /* Features */ 
+  .features { text-align: center; padding: 60px 20px; } 
+  .features h2 { font-size: 28px; margin-bottom: 10px; } 
+  .features p { font-size: 16px; color: #555; margin-bottom: 40px; } 
+  .feature-cards { display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; } 
+  .card { background: #fff; padding: 25px; border-radius: 12px; width: 300px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; } 
+  .card .icon { font-size: 40px; margin-bottom: 15px; } 
+  .icon.blue { color: #759bec; } 
+  .icon.green { color: #22c55e; } 
+  .icon.orange { color: #f97316; } 
+  .card h3 { font-size: 18px; margin-bottom: 10px; } 
+  .card p { font-size: 14px; color: #666; margin-bottom: 20px; }
+   /* Footer */ 
+   footer { background: #5d8ef9; color: #fff; text-align: center; padding: 25px 20px; margin-top: 40px; } 
+   .footer-logo { font-size: 18px; font-weight: 600; display: block; margin-bottom: 5px; } 
+   </style> 
+   </head> 
+<body> 
+  <!-- Navbar --> 
+   <header class="navbar"> 
+    <div class="logo"> 
+      <img src="images/location.png" alt="logo"> 
+      <span>Campus Navigator</span> 
+    </div> 
+  </header> 
+  <!-- Hero Section --> 
+  <section class="hero"> 
+    <div class="hero-content"> 
+      <h1>Explore Your Campus</h1> 
+      <p>Navigate, connect, and discover everything your campus has to offer with our comprehensive digital platform</p> 
+      <div class="hero-buttons"> <a href="http://localhost/campus_directory/login.php" class="btn green" style="width: 150px;">Login</a> 
+      <div class="hero-buttons"> <a href="http://localhost/campus_directory/signup.php" class="btn green" style="width: 150px;">Sign In</a> 
+      </div> 
+    </div> 
+  </section> 
+  <!-- Features --> 
+   <section class="features"> <h2>Campus Resources at Your Fingertips</h2> 
+    <p>Access essential campus information through our three integrated modules designed for students, staff, and visitors</p> 
+    <div class="feature-cards"> <div class="card" id="map"> 
+      <div class="icon blue"><img src="images/locmsg.png" alt="logo" style="width: 25%;height: 25%;"></div> 
+      <h3>Interactive Campus Map</h3> <p>Explore our campus with detailed interactive maps showing all buildings, facilities, and key locations.</p> 
+      <a href="#" class="btn blue">Access Interactive</a> 
+    </div> <div class="card" id="timetable"> <div class="icon green">
+      <img src="images/clock.png" alt="logo" style="width: 22%;height: 25%;">
+    </div> 
+    <h3>Lecturer Timetable</h3> 
+    <p>Search and view lecturer schedules by name or department. Plan your consultations efficiently.</p> 
+    <a href="#" class="btn blue">Access Lecturer</a> 
+  </div> 
+  <div class="card" id="directory"> 
+    <div class="icon orange">
+      <img src="images/people.png" alt="logo" style="width: 25%;height: 25%;">
+    </div> <h3>Campus Directory</h3> <p>Access comprehensive faculty profiles with contact information and specializations.</p> 
+    <a href="#" class="btn blue">Access Campus</a> 
+  </div> 
+</div> 
+</section>
+ <!-- Footer --> 
+  <footer> 
+    <div class="footer-content"> 
+      <span class="footer-logo">📍 Campus Navigator</span> 
+      <p>Enhancing campus exploration and communication for everyone</p> 
+    </div> 
+  </footer> 
+</body> 
+</html>

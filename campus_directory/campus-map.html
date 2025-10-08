@@ -1,0 +1,540 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Map</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+      flex-direction: column;
+    }
+
+    /* Topbar */
+    .topbar {
+      height: 50px;
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .topbar .user {
+      font-size: 14px;
+      font-weight: normal;
+      color: #333;
+      height: 100px;
+    }
+.topbar .logo {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.topbar .logo img {
+  height: 28px;   /* adjust size */
+  margin-right: 8px;
+}
+
+    /* Main layout: sidebar + content */
+    .main-wrapper {
+      display: flex;
+      flex: 1;
+    }
+
+    /* Sidebar */
+.sidebar {
+  width: 220px;
+  background: #fff;
+  border-right: 1px solid #ddd;
+  padding: 20px 0;
+  font-family: Arial, sans-serif;
+  height: 100vh;   /* full height */
+}
+
+/* Sidebar title */
+.sidebar h2 {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 0 20px;
+  margin-bottom: 15px;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Sidebar list */
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Sidebar items */
+.sidebar li {
+  margin: 5px 0;
+}
+
+.sidebar li a {
+  display: block;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+/* Hover effect */
+.sidebar li a:hover {
+  background: #f0f4ff;
+  color: #163d8c;
+}
+
+/* Active page */
+.sidebar li.active a {
+  background: #163d8c;
+  color: #fff;
+  font-weight: bold;
+}
+
+    /* Main */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+    .main h2 {
+      margin: 0 0 10px;
+    }
+    .search-filter {
+      display: flex;
+      margin-bottom: 10px;
+    }
+    .search-filter input {
+      flex: 1;
+      padding: 8px;
+    }
+    .search-filter button {
+      padding: 8px 15px;
+      background: #163d8c;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Campus Map Section */
+    .campus-map-container {
+      flex: 1;
+      display: flex;
+    }
+    .map {
+      position: relative;
+      flex: 2;
+      background: url("images/image.png") no-repeat center/cover;
+      border-radius: 5px;
+      margin-right: 15px;
+      height: 660px;
+    }
+
+    /* Dots + Labels */
+    .dot-container {
+      position: absolute;
+      text-align: center;
+      transform: translate(-50%, -50%);
+    }
+    .dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid white;
+      display: inline-block;
+    }
+    .dot:hover {
+      transform: scale(1.2);
+    }
+    .dot-label {
+      display: block;
+      margin-top: 3px;
+      font-size: 11px;
+      background: white;
+      padding: 1px 4px;
+      border-radius: 3px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      white-space: nowrap;
+    }
+
+    /* Dot Colors */
+    .academic { background: #2d6cdf; }
+    .residential { background: purple; }
+    .administrative { background: red; }
+    .amenity { background: green; }
+    .transport { background: orange; }
+    .religious { background: brown; }
+
+    /* Info Panel (Right side) */
+    .info-side {
+      flex: 0.6;
+      display: flex;
+      flex-direction: column;
+    }
+    .legend {
+      margin-bottom: 10px;
+      background: #fff;
+      padding: 6px;
+      font-size: 17px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      
+    }
+    .legend h3 {
+      margin: 0 0 5px;
+      font-size: 12px;
+    }
+    .legend ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .legend li {
+      margin: 3px 0;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+    }
+    .legend-box {
+      width: 10px; 
+      height: 10px;
+      margin-right: 4px;
+      display: inline-block;
+    }
+    .legend-box.academic { background: #2d6cdf; }
+    .legend-box.residential { background: purple; }
+    .legend-box.administrative { background: red; }
+    .legend-box.amenity { background: green; }
+    .legend-box.transport { background: orange; }
+    .legend-box.religious { background: brown; }
+
+    .info-panel {
+      flex: 1;
+      background: #f9f9f9;
+      border-left: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 8px;
+      font-size: 12px;
+    }
+    .info-panel h3 {
+      margin: 0 0 6px;
+      font-size: 13px;
+    }
+    .info-panel .contact {
+      margin-top: 10px;
+      background: #77a1f6;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .logout-btn {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 9999;
+}
+.logout-btn:hover { background: #c0392b; }
+
+  </style>
+</head>
+<body>
+<!-- Top Bar -->
+<div class="topbar">
+  <div class="logo">
+    <img src="images/location.png" alt="Logo">
+    <span>Campus Navigator</span>
+  </div>
+  <div class="user">Student User ⌄</div>
+</div>
+
+<div class="main-wrapper">
+  <!-- Sidebar -->
+  <div class="sidebar">
+      <h2>Campus Navigator</h2>
+      
+       <ul>
+  <li><a href="http://localhost/campus_directory/campus-map.html">Campus Map</a></li>
+  <li><a href="http://localhost/campus_directory/timetable.php">Timetable</a></li>
+  <li><a href="http://localhost/campus_directory/campus-directory.php">Directory</a></li>
+</ul>
+
+    
+      <form action="logout.php" method="post" style="position:relative;">
+   <button type="submit" class="logout-btn">Logout</button>
+</form>
+    </div>
+
+
+
+  <!-- Main Content -->
+  <div class="main">
+    <h2>Interactive Campus Map</h2>
+    <div class="search-filter">
+      <input type="text" id="searchBox" placeholder=" Search buildings..." onkeyup="searchBuildings()" style="width: 90%;height: 28px; max-width: 700px; padding: 4px; margin: 15px 0; border: 1px solid #ccc; border-radius: 4px;font-size: 15px;">
+    </div>
+
+    <div class="campus-map-container">
+      <!-- Map -->
+      <div class="map">
+        <!-- Dots go here -->
+        <div class="dot-container" style="top: 79%; left: 20%;">
+          <div class="dot transport" data-building="Bus Stand"></div>
+          <span class="dot-label">Bus Stand</span>
+        </div>
+        <div class="dot-container" style="top: 40%; left: 49%;">
+          <div class="dot administrative" data-building="Principal Office"></div>
+          <span class="dot-label">Principal Office</span>
+        </div>
+        <div class="dot-container" style="top: 8%; left: 65%;">
+          <div class="dot academic" data-building="CSE Block"></div>
+          <span class="dot-label">CSE Block</span>
+        </div>
+        <div class="dot-container" style="top: 65%; left: 26%;">
+          <div class="dot religious" data-building="Campus Temple"></div>
+          <span class="dot-label">Campus Temple</span>
+        </div>
+        <div class="dot-container" style="top: 18%; left: 30%;">
+          <div class="dot academic" data-building="IT Block"></div>
+          <span class="dot-label">IT Block</span>
+        </div>
+        <div class="dot-container" style="top: 39%; left: 19%;">
+          <div class="dot academic" data-building="Central Library"></div>
+          <span class="dot-label">Central Library</span>
+        </div>
+        <div class="dot-container" style="top: 30%; left: 70%;">
+          <div class="dot academic" data-building="EEE Block"></div>
+          <span class="dot-label">EEE Block</span>
+        </div>
+        <div class="dot-container" style="top: 45%; left: 41%;">
+          <div class="dot administrative" data-building="Admission Block"></div>
+          <span class="dot-label">Admission Block</span>
+        </div>
+        <div class="dot-container" style="top: 46%; left: 70%;">
+          <div class="dot academic" data-building="ECE Block"></div>
+          <span class="dot-label">ECE Block</span>
+        </div>
+        <div class="dot-container" style="top: 5%; left: 43%;">
+          <div class="dot academic" data-building="Mechanical Block"></div>
+          <span class="dot-label">Mechanical Block</span>
+        </div>
+        <div class="dot-container" style="top: 50%; left: 16%;">
+          <div class="dot academic" data-building="Biotech & Biomedical"></div>
+          <span class="dot-label">Biotech & Biomedical</span>
+        </div>
+        <div class="dot-container" style="top: 59%; left: 86%;">
+          <div class="dot amenity" data-building="Campus Café"></div>
+          <span class="dot-label">Campus Café</span>
+        </div>
+        <div class="dot-container" style="top: 19%; left: 90%;">
+          <div class="dot residential" data-building="Girls Hostel"></div>
+          <span class="dot-label">Girls Hostel</span>
+        </div>
+        <div class="dot-container" style="top: 12%; left: 80%;">
+          <div class="dot academic" data-building="AIDS Building"></div>
+          <span class="dot-label">AIDS Building</span>
+        </div>
+        <div class="dot-container" style="top: 27%; left: 11%;">
+          <div class="dot residential" data-building="Boys Hostel"></div>
+          <span class="dot-label">Boys Hostel</span>
+        </div>
+        <div class="dot-container" style="top: 80%; left: 53%;">
+          <div class="dot amenity" data-building="Playground"></div>
+          <span class="dot-label">Playground</span>
+        </div>
+      </div>
+
+      <!-- Info + Legend -->
+      <div class="info-side">
+        <div class="legend">
+          <h3>Legend</h3>
+          <ul>
+            <li><span class="legend-box academic"></span> Academic</li>
+            <li><span class="legend-box residential"></span> Residential</li>
+            <li><span class="legend-box administrative"></span> Administrative</li>
+            <li><span class="legend-box amenity"></span> Amenity</li>
+            <li><span class="legend-box transport"></span> Transport</li>
+            <li><span class="legend-box religious"></span> Religious</li>
+          </ul>
+        </div>
+        <div class="info-panel" id="infoPanel">
+          <h3>Select a building</h3>
+          <p>Click on a dot to view details.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Building Information
+  const buildingInfo = {
+    "Bus Stand": {
+      category: "Transport",
+      description: "Campus bus terminal with regular city connections",
+      facilities: ["Bus Stops", "Waiting Area", "Ticket Counter", "Information Board"],
+      contact: "transport@college.edu"
+    },
+    "Principal Office": {
+      category: "Administrative",
+      description: "Administrative headquarters and principal office",
+      facilities: ["Principal Office", "Admin Offices", "Meeting Rooms", "Reception"],
+      contact: "admin@college.edu"
+    },
+    "CSE Block": {
+      category: "Academic",
+      description: "Computer Science & Engineering Department with advanced programming labs",
+      facilities: ["Programming Labs", "Research Centers", "Seminar Halls", "Faculty Room"],
+      contact: "cse@college.edu"
+    },
+    "Campus Temple": {
+      category: "Religious",
+      description: "Peaceful temple for prayers and meditation",
+      facilities: ["Prayer Hall", "Meditation Area", "Garden", "Community"],
+      contact: "temple@college.edu"
+    },
+    "IT Block": {
+      category: "Academic",
+      description: "Information Technology Department with modern computer labs and classrooms",
+      facilities: ["Computer Labs", "Smart Classrooms", "Project Rooms", "Faculty Offices"],
+      contact: "it@college.edu"
+    },
+    "Central Library": {
+      category: "Academic",
+      description: "Multi-story library with vast collection of books and digital resources",
+      facilities: ["Reading Halls", "Digital Library", "Reference Section", "Study Room"],
+      contact: "library@college.edu"
+    },
+    "EEE Block": {
+      category: "Academic",
+      description: "Electrical & Electronics Engineering with specialized laboratories",
+      facilities: ["Power Systems Lab", "Electronics Lab", "Control Systems Lab", "Workshops"],
+      contact: "eee@college.edu"
+    },
+    "Admission Block": {
+      category: "Administrative",
+      description: "Admission office and student services",
+      facilities: ["Admission Office", "Student Services", "Counseling Center", "Records Office"],
+      contact: "admission@college.edu"
+    },
+    "ECE Block": {
+      category: "Academic",
+      description: "Electronics & Communication Engineering Department",
+      facilities: ["Communication Lab", "VLSI Lab", "Signal Processing Lab", "Antenna Lab"],
+      contact: "ece@college.edu"
+    },
+    "Mechanical Block": {
+      category: "Academic",
+      description: "Mechanical Engineering with workshops and testing facilities",
+      facilities: ["Machine Shop", "CAD Lab", "Thermal Lab", "Materials Testing Lab"],
+      contact: "mech@college.edu"
+    },
+    "Biotech & Biomedical": {
+      category: "Academic",
+      description: "Biotechnology and Biomedical Engineering Department",
+      facilities: ["Bio Labs", "Research Facilities", "Clean Rooms", "Equipment Center"],
+      contact: "biotech@college.edu"
+    },
+    "Campus Café": {
+      category: "Amenity",
+      description: "Student cafeteria with variety of food options",
+      facilities: ["Food Court", "Seating Area", "Coffee Shop", "Outdoor Seating"],
+      contact: "cafe@college.edu"
+    },
+    "Girls Hostel": {
+      category: "Residential",
+      description: "Comfortable accommodation for female students",
+      facilities: ["Dormitory Rooms", "Common Room", "Study Hall", "Dining Hall", "Security"],
+      contact: "girls-hostel@college.edu"
+    },
+    "AIDS Building": {
+      category: "Academic",
+      description: "Artificial Intelligence & Data Science Department",
+      facilities: ["AI Labs", "Data Centers", "Machine Learning Lab", "Research Center"],
+      contact: "aids@college.edu"
+    },
+    "Playground": {
+      category: "Amenity",
+      description: "Outdoor sports and recreation area for students.",
+      facilities: ["Cricket Ground", "Football Field", "Basketball Court", "Running Track"],
+      contact: "playground@college.edu"
+    },
+    "Boys Hostel": {
+      category: "Residential",
+      description: "Modern accommodation for male students",
+      facilities: ["Dormitory Rooms", "Recreation Room", "Study Area", "Mess Hall", "Gym"],
+      contact: "boys-hostel@college.edu"
+    }
+  };
+
+  // Dot click handler
+  document.querySelectorAll(".dot").forEach(dot => {
+    dot.addEventListener("click", () => {
+      const building = dot.getAttribute("data-building");
+      const info = buildingInfo[building];
+      const panel = document.getElementById("infoPanel");
+
+      panel.innerHTML = `
+        <h3>${building}</h3>
+        <p><b>${info.category}</b><br>${info.description}</p>
+        <p><b>Facilities:</b></p>
+        <ul>${info.facilities.map(f => `<li>${f}</li>`).join("")}</ul>
+        <div class="contact"><b>Contact:</b> ${info.contact}</div>
+      `;
+    });
+  });
+
+  // Default load: show Temple info
+  window.addEventListener("DOMContentLoaded", () => {
+    const defaultBuilding = "Campus Temple";
+    const info = buildingInfo[defaultBuilding];
+    const panel = document.getElementById("infoPanel");
+
+    panel.innerHTML = `
+      <h3>${defaultBuilding}</h3>
+      <p><b>${info.category}</b><br>${info.description}</p>
+      <p><b>Facilities:</b></p>
+      <ul>${info.facilities.map(f => `<li>${f}</li>`).join("")}</ul>
+      <div class="contact"><b>Contact:</b> ${info.contact}</div>
+    `;
+  });
+
+  // Search
+  function searchBuildings() {
+    let input = document.getElementById("searchBox").value.toLowerCase();
+    let dots = document.querySelectorAll(".dot-container");
+
+    dots.forEach(dot => {
+      let label = dot.querySelector(".dot-label").innerText.toLowerCase();
+      if (label.includes(input) || input === "") {
+        dot.style.display = "block";
+      } else {
+        dot.style.display = "none";
+      }
+    });
+  }
+</script>
+</body>
+</html>
